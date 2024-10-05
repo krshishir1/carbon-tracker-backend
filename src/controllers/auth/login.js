@@ -1,5 +1,7 @@
 const User = require("../../models/user");
 
+const {comparePassword} = require("../../passwordManagement");
+
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 
@@ -17,17 +19,15 @@ module.exports = async (req, res) => {
 
     const { username, password } = req.body;
 
-    const newUser = new User({
-        name,
-        username,
-        email,
-        password,
-        avatarUrl,
-    })
+    const foundUser = await User.findOne({username})
 
-    await newUser.save();
+    if (!foundUser) throw new Error("User not found");
 
-    const jwtToken = await jwt.sign({ ...newUser }, "secret")
+    const isPassRight = await comparePassword(password, foundUser.password);
+
+    if (!isPassRight) throw new Error("Invalid password");
+
+    const jwtToken = await jwt.sign({ ...foundUser }, "secret")
 
     res.status(201).json({ token: jwtToken, message: "User created successfully" });
 
