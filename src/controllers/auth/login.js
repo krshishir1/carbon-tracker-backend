@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
 
     const jwtToken = await jwt.sign({ ...foundUser }, "secret")
 
-    res.status(201).json({ token: jwtToken, message: "User created successfully" });
+    res.status(201).json({ token: jwtToken, message: "User created successfully", user: foundUser });
 
   } catch (err) {
     console.log(err.message);
