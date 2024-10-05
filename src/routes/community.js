@@ -12,3 +12,5 @@ router.post('/comments', checkUser, createCommentController);
 router.post('/like', checkUser, likePostController);
 
 module.exports = router;
+
+// POST /community/posts

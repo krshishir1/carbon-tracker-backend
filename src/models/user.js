@@ -27,7 +27,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  age: Number,
+  members: Number,
   avatarUrl: String,
+
 }, {timestamps: true});
 
 userSchema.pre("save", async function () {

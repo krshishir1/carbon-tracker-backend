@@ -9,6 +9,8 @@ module.exports = async (req, res) => {
       username: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required().min(8),
+      age: Joi.number(),
+      members: Joi.number(),
       avatarUrl: Joi.string(),
     });
 
@@ -17,13 +19,15 @@ module.exports = async (req, res) => {
     const isValid = error === undefined || null;
     if (!isValid) throw new Error(error.message);
 
-    const { name, username, email, password, avatarUrl } = req.body;
+    const { name, username, email, password, age, members, avatarUrl } = req.body;
 
     const newUser = new User({
         name,
         username,
         email,
         password,
+        age,
+        members,
         avatarUrl,
     })
 
