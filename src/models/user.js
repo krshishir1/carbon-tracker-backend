@@ -3,6 +3,16 @@ const validator = require("validator");
 
 const { hashPassword } = require("../passwordManagement");
 
+const historySchema = new mongoose.Schema({
+  dateOfTrack: {
+    type: Date,
+    required: true,
+  },
+  totalEmissions: {
+    type: Number
+  }
+})
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -27,10 +37,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  age: Number,
-  members: Number,
-  avatarUrl: String,
-
+  activities: {
+    type: [historySchema],
+    default: []
+  }
 }, {timestamps: true});
 
 userSchema.pre("save", async function () {

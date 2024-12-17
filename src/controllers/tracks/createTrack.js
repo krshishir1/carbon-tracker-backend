@@ -1,4 +1,5 @@
 const Track = require("../../models/tracks");
+const User = require("../../models/user");
 const Joi = require("joi");
 
 module.exports = async (req, res) => {
@@ -26,12 +27,27 @@ module.exports = async (req, res) => {
 
       await newTrack.save();
 
+      await User.findByIdAndUpdate(userId, {
+        $push: { activities: { dateOfTrack: dateCreated, totalEmissions: answers[0].emissions}}
+      })
+
+
       res.status(201).json({ message: "Track created successfully" });
     } else {
         const returnDoc = await Track.findOneAndUpdate(
             { userId, dateCreated },
             { answers },
             { returnDocument: "after" }
+        )
+
+        let totalEmissions = 0;
+        answers.forEach((answer) => {
+            totalEmissions += answer.emissions;
+        })
+
+        await User.findOneAndUpdate(
+            { _id: userId, "activities.dateOfTrack": dateCreated },
+            { $set: { "activities.$.totalEmissions": totalEmissions } }
         )
 
         res.status(201).json({ message: "Track updated successfully" });

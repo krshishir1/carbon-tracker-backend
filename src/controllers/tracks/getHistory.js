@@ -1,24 +1,26 @@
-const Track = require("../../models/tracks");
+const User = require("../../models/user");
 const Joi = require("joi");
 
 module.exports = async (req, res) => {
   try {
     const querySchema = Joi.object({
       userId: Joi.string().required(),
-      dateCreated: Joi.date(),
     });
 
     const { error } = querySchema.validate(req.query);
     const isValid = error === undefined || null;
     if (!isValid) throw new Error(error.message);
 
-    const { userId, dateCreated } = req.query;
+    const { userId } = req.query;
 
-    const foundTrack = await Track.findOne({ userId, dateCreated });
+    console.log(req.username)
+    const foundUser = await User.findOne({ username: req.username });
 
-    if(!foundTrack) throw new Error("Track not found");
+    if(!foundUser) throw new Error("User not found");
 
-    res.status(200).json({ answers: [...foundTrack.answers] });
+    console.log(foundUser.activities)
+
+    res.status(200).json({ history: [...foundUser.activities] });
 
   } catch (err) {
     console.log(err.message);
