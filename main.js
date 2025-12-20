@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -6,8 +7,6 @@ const cors = require("cors");
 const authRouter = require("./src/routes/auth");
 const communityRouter = require("./src/routes/community");
 const trackRouter = require("./src/routes/tracks")
-
-require("dotenv").config();
 
 const port = process.env.PORT || 4000;
 
@@ -26,4 +25,4 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
   });
-}) .catch(err => console.log(err))
+}).catch(err => console.log(err))

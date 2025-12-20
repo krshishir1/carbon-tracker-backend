@@ -4,15 +4,15 @@ const Joi = require("joi");
 module.exports = async (req, res) => {
   try {
     const bodySchema = Joi.object({
-        author: Joi.object({
-            name: Joi.string(),
-            username: Joi.string(),
-            avatarUrl: Joi.string()
-        }),
-        content: Joi.string().required(),
-        rootPost: Joi.string().required(),
-        parentPost: Joi.string(),
-        orderId: Joi.number().required(),
+      author: Joi.object({
+        name: Joi.string().allow(""),
+        username: Joi.string().allow(""),
+        avatarUrl: Joi.string().allow("")
+      }),
+      content: Joi.string().required(),
+      rootPost: Joi.string().required(),
+      parentPost: Joi.string(),
+      orderId: Joi.number().required(),
     })
 
     const { error } = bodySchema.validate(req.body);
@@ -23,11 +23,11 @@ module.exports = async (req, res) => {
     const { author, content, rootPost, parentPost, orderId } = req.body;
 
     const newComment = new Post({
-        author,
-        content,
-        rootPost,
-        parentPost,
-        orderId
+      author,
+      content,
+      rootPost,
+      parentPost,
+      orderId
     })
 
     await newComment.save();

@@ -26,11 +26,21 @@ const postSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    likes: {
+    trees: {
         type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
         default: []
     },
-    imageUrl: String
+    impactTag: {
+        type: String,
+        enum: ["Air", "Water", "Plastic", "Climate"],
+    },
+    imageUrl: String,
+    videoUrl: String,
+    donations: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 })

@@ -37,11 +37,36 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
   activities: {
     type: [historySchema],
     default: []
+  },
+  treesPlanted: {
+    type: Number,
+    default: 0
+  },
+  dailyTreesPlanted: {
+    count: { type: Number, default: 0 },
+    lastUpdated: { type: Date, default: Date.now }
+  },
+  totalDonated: {
+    type: Number,
+    default: 0
+  },
+  helpfulComments: {
+    type: Number,
+    default: 0
+  },
+  impactScore: {
+    type: Number,
+    default: 0
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 userSchema.pre("save", async function () {
   const hashedPassword = await hashPassword(this.password);
